@@ -61,13 +61,13 @@ func main() {
 						Name:    "block",
 						Aliases: []string{"b"},
 						Value:   5,
-						Usage:   "the size of the block used when rendering",
+						Usage:   "the size of the blocks used when rendering",
 					},
 					&cli.UintFlag{
 						Name:    "cutoff",
 						Aliases: []string{"cut"},
 						Value:   5,
-						Usage:   "the size of the block used when rendering",
+						Usage:   "the cutoff value of the algorithm",
 					},
 					&cli.UintFlag{
 						Name:    "reps",

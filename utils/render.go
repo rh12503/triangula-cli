@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-// decodePoints reads and decodes an JSON file containing the data of points.
+// decodePoints reads and decodes a JSON file containing the data of points.
 func decodePoints(inputFile string) (normgeom.NormPointGroup, error){
 	jsonPoints, err := ioutil.ReadFile(inputFile)
 	if err != nil {
