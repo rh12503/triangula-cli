@@ -18,7 +18,7 @@ OPTIONS:
    --population value, --pop value, --size value  the population size in the algorithm (default: 400)
    --cache value, -c value                        the cache size as a power of 2 (default: 22)
    --block value, -b value                        the size of the block used when rendering (default: 5)
-   --cutoff value, --cut value                    the size of the block used when rendering (default: 5)
+   --cutoff value, --cut value                    the cutoff value of the algorithm (default: 5)
    --reps value, -r value                         the number of generations before saving to the output file (default: 500)
    --threads value, -t value                      the number of threads to use or 0 to use all cores (default: 0)
    --help, -h                                     show help (default: false)
