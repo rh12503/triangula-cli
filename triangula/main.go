@@ -1,10 +1,11 @@
 package main
 
 import (
-	"Triangula-CLI/utils"
-	"github.com/urfave/cli/v2"
 	"log"
 	"os"
+
+	"github.com/RH12503/Triangula-CLI/utils"
+	"github.com/urfave/cli/v2"
 )
 
 func main() {

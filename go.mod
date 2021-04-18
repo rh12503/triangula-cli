@@ -1,9 +1,9 @@
-module Triangula-CLI
+module github.com/RH12503/Triangula-CLI
 
 go 1.16
 
 require (
-	github.com/RH12503/Triangula v0.0.0-20210415235432-18c7db1f406f
+	github.com/RH12503/Triangula v0.0.0-20210418114152-6c89d631df85
 	github.com/fogleman/gg v1.3.0
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
 	github.com/urfave/cli/v2 v2.3.0
