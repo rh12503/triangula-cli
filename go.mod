@@ -1,4 +1,4 @@
-module Triangula-CLI
+module github.com/RH12503/Triangula-CLI
 
 go 1.16
 
