@@ -1,10 +1,11 @@
 package utils
 
 import (
-	"fmt"
-	image2 "github.com/RH12503/Triangula/image"
 	"image"
 	"os"
+
+	image2 "github.com/RH12503/Triangula/image"
+	"github.com/fatih/color"
 )
 
 // decodeImage reads and decodes an image.
@@ -12,7 +13,7 @@ func decodeImage(imageFile string) (image2.Data, error) {
 	file, err := os.Open(imageFile)
 
 	if err != nil {
-		fmt.Println("\u001b[31merror reading image file\u001b[0m")
+		color.Red("error reading image file")
 		return image2.Data{}, err
 	}
 
@@ -21,7 +22,7 @@ func decodeImage(imageFile string) (image2.Data, error) {
 	file.Close()
 
 	if err != nil {
-		fmt.Println("\u001b[31merror decoding image\u001b[0m")
+		color.Red("error decoding image")
 		return image2.Data{}, err
 	}
 

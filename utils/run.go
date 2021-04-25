@@ -3,17 +3,19 @@ package utils
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/RH12503/Triangula/algorithm"
-	"github.com/RH12503/Triangula/algorithm/evaluator"
-	"github.com/RH12503/Triangula/generator"
-	"github.com/RH12503/Triangula/mutation"
-	"github.com/RH12503/Triangula/normgeom"
 	_ "image/jpeg"
 	_ "image/png"
 	"io/ioutil"
 	"runtime"
 	"strings"
 	"time"
+
+	"github.com/RH12503/Triangula/algorithm"
+	"github.com/RH12503/Triangula/algorithm/evaluator"
+	"github.com/RH12503/Triangula/generator"
+	"github.com/RH12503/Triangula/mutation"
+	"github.com/RH12503/Triangula/normgeom"
+	"github.com/fatih/color"
 )
 
 var printReps = 20
@@ -29,7 +31,7 @@ func RunAlgorithm(imageFile, outputFile string, numPoints uint, mutations uint,
 	pointFactory := func() normgeom.NormPointGroup {
 		return (generator.RandomGenerator{}).Generate(int(numPoints))
 	}
-	fmt.Println("\u001B[33mReading image file...")
+	color.Yellow("Reading image file...")
 
 	img, err := decodeImage(imageFile)
 
@@ -37,7 +39,7 @@ func RunAlgorithm(imageFile, outputFile string, numPoints uint, mutations uint,
 		return
 	}
 
-	fmt.Println("Initializing algorithm...")
+	color.Yellow("Initializing algorithm...")
 
 	evaluatorFactory := func(n int) evaluator.Evaluator {
 		return evaluator.NewParallel(img, int(cache), int(block), n)
@@ -48,8 +50,7 @@ func RunAlgorithm(imageFile, outputFile string, numPoints uint, mutations uint,
 
 	algo := algorithm.NewSimple(pointFactory, int(population), int(cutoff), evaluatorFactory, mutator)
 
-	fmt.Println("Running algorithm...\u001B[0m")
-
+	color.Yellow("Running algorithm...")
 	filename := outputFile
 
 	if !strings.HasSuffix(filename, ".json") {
@@ -72,19 +73,18 @@ func generateOutput(algo algorithm.Algorithm, output string, reps int) error {
 			stats := algo.Stats()
 
 			delta := float64(time.Since(ti).Microseconds()) / (float64(printReps) * 1000.)
-			fmt.Printf("\u001b[33mGeneration\u001b[0m %v\u001b[37m | \u001b[0m\u001b[33mFitness\u001b[0m %.8f\u001b[37m | \u001b[0m\u001b[33mTime\u001b[0m %.2fms\r",
+			fmt.Fprintf(color.Output, "Generation %v"+color.WhiteString(" | ")+color.YellowString("Fitness")+" %.8f"+color.WhiteString(" | ")+color.YellowString("Time")+" %.2fms\r",
 				stats.Generation, stats.BestFitness, delta)
-
 		}
 
 		jsonOut, err := json.Marshal(algo.Best())
 		if err != nil {
-			fmt.Println("\u001b[31merror encoding json\u001b[0m")
+			color.Red("error encoding json")
 			return err
 		}
 		err = ioutil.WriteFile(output, jsonOut, 0644)
 		if err != nil {
-			fmt.Println("\u001b[31merror writing json output\u001b[0m")
+			color.Red("error writing json output")
 			return err
 		}
 	}
