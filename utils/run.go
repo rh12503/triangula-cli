@@ -7,6 +7,7 @@ import (
 	_ "image/png"
 	"io/ioutil"
 	"runtime"
+	"strings"
 	"time"
 
 	"github.com/RH12503/Triangula/algorithm"
@@ -50,7 +51,13 @@ func RunAlgorithm(imageFile, outputFile string, numPoints uint, mutations uint,
 	algo := algorithm.NewSimple(pointFactory, int(population), int(cutoff), evaluatorFactory, mutator)
 
 	color.Yellow("Running algorithm...")
-	generateOutput(algo, outputFile, reps)
+	filename := outputFile
+
+	if !strings.HasSuffix(filename, ".json") {
+		filename += ".json"
+	}
+
+	generateOutput(algo, filename, reps)
 }
 
 // generateOutput is an utility function for running an algorithm.
@@ -75,7 +82,7 @@ func generateOutput(algo algorithm.Algorithm, output string, reps int) error {
 			color.Red("error encoding json")
 			return err
 		}
-		err = ioutil.WriteFile(output+".json", jsonOut, 0644)
+		err = ioutil.WriteFile(output, jsonOut, 0644)
 		if err != nil {
 			color.Red("error writing json output")
 			return err

@@ -45,7 +45,12 @@ func RenderPNG(inputFile, outputFile, imageFile, effect string, scale float64) {
 	}
 
 	color.Yellow("Generating PNG...")
-	filename := outputFile + ".png"
+	filename := outputFile
+
+	if !strings.HasSuffix(filename, ".png") {
+		filename += ".png"
+	}
+
 	switch e := strings.ToLower(effect); e {
 	case "none":
 		err = export.WritePNG(filename, points, img, scale)
@@ -85,11 +90,18 @@ func RenderSVG(inputFile, outputFile, imageFile string) {
 	}
 
 	color.Yellow("Generating SVG...")
-	err = export.WriteSVG(outputFile+".svg", points, img)
+	filename := outputFile
+
+	if !strings.HasSuffix(filename, ".svg") {
+		filename += ".svg"
+	}
+
+	err = export.WriteSVG(filename, points, img)
 
 	if err != nil {
 		color.Red("error generating SVG")
 		return
 	}
-	color.Green("Successfully generated SVG at %s.svg!", outputFile)
+  
+	color.Green("Successfully generated SVG at %s.svg!", filename)
 }
