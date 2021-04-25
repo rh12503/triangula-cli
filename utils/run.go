@@ -12,6 +12,7 @@ import (
 	_ "image/png"
 	"io/ioutil"
 	"runtime"
+	"strings"
 	"time"
 )
 
@@ -48,7 +49,14 @@ func RunAlgorithm(imageFile, outputFile string, numPoints uint, mutations uint,
 	algo := algorithm.NewSimple(pointFactory, int(population), int(cutoff), evaluatorFactory, mutator)
 
 	fmt.Println("Running algorithm...\u001B[0m")
-	generateOutput(algo, outputFile, reps)
+
+	filename := outputFile
+
+	if !strings.HasSuffix(filename, ".json") {
+		filename += ".json"
+	}
+
+	generateOutput(algo, filename, reps)
 }
 
 // generateOutput is an utility function for running an algorithm.
@@ -74,7 +82,7 @@ func generateOutput(algo algorithm.Algorithm, output string, reps int) error {
 			fmt.Println("\u001b[31merror encoding json\u001b[0m")
 			return err
 		}
-		err = ioutil.WriteFile(output+".json", jsonOut, 0644)
+		err = ioutil.WriteFile(output, jsonOut, 0644)
 		if err != nil {
 			fmt.Println("\u001b[31merror writing json output\u001b[0m")
 			return err
