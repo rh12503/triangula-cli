@@ -14,7 +14,7 @@ func decodeImage(imageFile string) (image2.Data, error) {
 
 	if err != nil {
 		color.Red("error reading image file")
-		return image2.Data{}, err
+		return image2.RGBData{}, err
 	}
 
 	image, _, err := image.Decode(file)
@@ -23,7 +23,7 @@ func decodeImage(imageFile string) (image2.Data, error) {
 
 	if err != nil {
 		color.Red("error decoding image")
-		return image2.Data{}, err
+		return image2.RGBData{}, err
 	}
 
 	img := image2.ToData(image)
