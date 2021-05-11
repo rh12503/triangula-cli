@@ -3,6 +3,7 @@ package utils
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/RH12503/Triangula/fitness"
 	_ "image/jpeg"
 	_ "image/png"
 	"io/ioutil"
@@ -42,7 +43,7 @@ func RunAlgorithm(imageFile, outputFile string, numPoints uint, mutations uint,
 	color.Yellow("Initializing algorithm...")
 
 	evaluatorFactory := func(n int) evaluator.Evaluator {
-		return evaluator.NewParallel(img, int(cache), int(block), n)
+		return evaluator.NewParallel(fitness.TrianglesImageFunctions(img,  int(block), n), int(cache))
 	}
 	var mutator mutation.Method
 
