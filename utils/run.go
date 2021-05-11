@@ -48,7 +48,7 @@ func RunAlgorithm(imageFile, outputFile string, numPoints uint, mutations uint,
 
 	mutator = mutation.NewGaussianMethod(float64(mutations)/float64(numPoints), variation)
 
-	algo := algorithm.NewSimple(pointFactory, int(population), int(cutoff), evaluatorFactory, mutator)
+	algo := algorithm.NewModifiedGenetic(pointFactory, int(population), int(cutoff), evaluatorFactory, mutator)
 
 	color.Yellow("Running algorithm...")
 	filename := outputFile

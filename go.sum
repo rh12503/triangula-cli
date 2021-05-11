@@ -3,6 +3,8 @@ github.com/RH12503/Triangula v1.1.2 h1:5QdjW2fel1hTg2xREd7nYzFsN7guIc/efh4D7Tvr0
 github.com/RH12503/Triangula v1.1.2/go.mod h1:8bNEstUsJzDMce8zZ12t+MaQRcNgl8P41ly6j6ahe78=
 github.com/RH12503/Triangula v1.1.3 h1:53SBwUDPzXEVHZ6kD/8Yy9DcAVquwukUXbHHnv2XMHs=
 github.com/RH12503/Triangula v1.1.3/go.mod h1:8bNEstUsJzDMce8zZ12t+MaQRcNgl8P41ly6j6ahe78=
+github.com/RH12503/Triangula v1.1.4 h1:3nWhHBj+IpJU/LwDahCVKDh3Y0PRORtboSqfX8Etkkk=
+github.com/RH12503/Triangula v1.1.4/go.mod h1:8bNEstUsJzDMce8zZ12t+MaQRcNgl8P41ly6j6ahe78=
 github.com/cpuguy83/go-md2man/v2 v2.0.0-20190314233015-f79a8a8ca69d h1:U+s90UTSYgptZMwQh2aRr3LuazLJIa+Pg3Kc1ylSYVY=
 github.com/cpuguy83/go-md2man/v2 v2.0.0-20190314233015-f79a8a8ca69d/go.mod h1:maD7wRr/U5Z6m/iR4s+kqSMx2CaBsrgA7czyZG/E6dU=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
