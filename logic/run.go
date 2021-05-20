@@ -1,9 +1,11 @@
-package utils
+package logic
 
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/RH12503/Triangula-CLI/util"
 	"github.com/RH12503/Triangula/fitness"
+	"github.com/RH12503/Triangula/image"
 	_ "image/jpeg"
 	_ "image/png"
 	"io/ioutil"
@@ -19,10 +21,8 @@ import (
 	"github.com/fatih/color"
 )
 
-var printReps = 20
-
 // RunAlgorithm runs an algorithm, saves the output, and prints statistics.
-func RunAlgorithm(imageFile, outputFile string, numPoints uint, mutations uint,
+func RunAlgorithm(imageFile, outputFile string, numPoints uint, shape string, mutations uint,
 	variation float64, population, cache, cutoff, block, repetitions, threads uint) {
 
 	runtime.GOMAXPROCS(int(threads))
@@ -34,7 +34,7 @@ func RunAlgorithm(imageFile, outputFile string, numPoints uint, mutations uint,
 	}
 	color.Yellow("Reading image file...")
 
-	img, err := decodeImage(imageFile)
+	img, err := util.DecodeImage(imageFile)
 
 	if err != nil {
 		return
@@ -42,8 +42,22 @@ func RunAlgorithm(imageFile, outputFile string, numPoints uint, mutations uint,
 
 	color.Yellow("Initializing algorithm...")
 
+	var fitnessFuncsFactory func(target image.Data, blockSize, n int) []fitness.CacheFunction
+
+	switch shape {
+	case "triangles":
+		fitnessFuncsFactory = fitness.TrianglesImageFunctions
+		break
+	case "polygons":
+		fitnessFuncsFactory = fitness.PolygonsImageFunctions
+		break
+	default:
+		color.Red("invalid shape type")
+		return
+	}
+
 	evaluatorFactory := func(n int) evaluator.Evaluator {
-		return evaluator.NewParallel(fitness.TrianglesImageFunctions(img,  int(block), n), int(cache))
+		return evaluator.NewParallel(fitnessFuncsFactory(img, int(block), n), int(cache))
 	}
 	var mutator mutation.Method
 
@@ -67,13 +81,14 @@ func generateOutput(algo algorithm.Algorithm, output string, reps int) error {
 
 		for i := 0; i < reps; {
 			ti := time.Now()
-			for j := 0; j < printReps && i < reps; j++ {
+			p := i
+			for time.Since(ti).Milliseconds() < 500 && i < reps {
 				algo.Step()
 				i++
 			}
 			stats := algo.Stats()
 
-			delta := float64(time.Since(ti).Microseconds()) / (float64(printReps) * 1000.)
+			delta := float64(time.Since(ti).Microseconds()) / (float64(i-p) * 1000.)
 			fmt.Fprintf(color.Output, "Generation %v"+color.WhiteString(" | ")+color.YellowString("Fitness")+" %.8f"+color.WhiteString(" | ")+color.YellowString("Time")+" %.2fms\r",
 				stats.Generation, stats.BestFitness, delta)
 		}

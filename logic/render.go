@@ -1,12 +1,16 @@
-package utils
+package logic
 
 import (
 	"encoding/json"
+	"errors"
+	"github.com/RH12503/Triangula-CLI/polygons"
+	"github.com/RH12503/Triangula-CLI/util"
+	"github.com/RH12503/Triangula/image"
 	"io/ioutil"
 	"log"
 	"strings"
 
-	"github.com/RH12503/Triangula-CLI/export"
+	"github.com/RH12503/Triangula-CLI/triangles"
 	"github.com/RH12503/Triangula/normgeom"
 	"github.com/fatih/color"
 )
@@ -28,10 +32,10 @@ func decodePoints(inputFile string) (normgeom.NormPointGroup, error) {
 }
 
 // RenderPNG renders a triangulation to a PNG.
-func RenderPNG(inputFile, outputFile, imageFile, effect string, scale float64) {
+func RenderPNG(inputFile, outputFile, imageFile, shape, effect string, scale float64) {
 	color.Yellow("Reading image file...")
 
-	img, err := decodeImage(imageFile)
+	img, err := util.DecodeImage(imageFile)
 
 	if err != nil {
 		return
@@ -51,13 +55,30 @@ func RenderPNG(inputFile, outputFile, imageFile, effect string, scale float64) {
 		filename += ".png"
 	}
 
+	var writePNG func(string, normgeom.NormPointGroup, image.Data, float64) error
+	var writeEffectPNG func(string, normgeom.NormPointGroup, image.Data, float64, bool) error
+
+	switch shape {
+	case "triangles":
+		writePNG = triangles.WritePNG
+		writeEffectPNG = triangles.WriteEffectPNG
+		break
+	case "polygons":
+		writePNG = polygons.WritePNG
+		writeEffectPNG = polygons.WriteEffectPNG
+		break
+	default:
+		color.Red("invalid shape type")
+		return
+	}
+
 	switch e := strings.ToLower(effect); e {
 	case "none":
-		err = export.WritePNG(filename, points, img, scale)
+		err = writePNG(filename, points, img, scale)
 	case "gradient":
-		err = export.WriteEffectPNG(filename, points, img, scale, true)
+		err = writeEffectPNG(filename, points, img, scale, true)
 	case "split":
-		err = export.WriteEffectPNG(filename, points, img, scale, false)
+		err = writeEffectPNG(filename, points, img, scale, false)
 	default:
 		color.Red("unknown effect")
 		return
@@ -73,10 +94,10 @@ func RenderPNG(inputFile, outputFile, imageFile, effect string, scale float64) {
 }
 
 // RenderSVG renders a triangulation to a SVG.
-func RenderSVG(inputFile, outputFile, imageFile string) {
+func RenderSVG(inputFile, outputFile, imageFile, shape string) {
 	color.Yellow("Reading image file...")
 
-	img, err := decodeImage(imageFile)
+	img, err := util.DecodeImage(imageFile)
 
 	if err != nil {
 		return
@@ -96,12 +117,21 @@ func RenderSVG(inputFile, outputFile, imageFile string) {
 		filename += ".svg"
 	}
 
-	err = export.WriteSVG(filename, points, img)
+	switch shape {
+	case "triangles":
+		err = triangles.WriteSVG(filename, points, img)
+		break
+	case "polygons":
+		err = polygons.WriteSVG(filename, points, img)
+		break
+	default:
+		err = errors.New("invalid shape type")
+	}
 
 	if err != nil {
 		color.Red("error generating SVG")
 		return
 	}
-  
+
 	color.Green("Successfully generated SVG at %s.svg!", filename)
 }

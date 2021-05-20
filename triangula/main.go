@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/RH12503/Triangula-CLI/utils"
+	"github.com/RH12503/Triangula-CLI/logic"
 	"github.com/urfave/cli/v2"
 )
 
@@ -33,6 +33,12 @@ func main() {
 						Aliases: []string{"p"},
 						Value:   300,
 						Usage:   "the number of points to use in the triangulation",
+					},
+					&cli.StringFlag{
+						Name:     "shape",
+						Aliases:  []string{"s"},
+						Value: "triangles",
+						Usage:    "the type of shape to use, either triangles or polygons",
 					},
 					&cli.UintFlag{
 						Name:    "mutations",
@@ -84,7 +90,7 @@ func main() {
 					},
 				},
 				Action: func(c *cli.Context) error {
-					utils.RunAlgorithm(c.String("image"), c.String("output"), c.Uint("points"),
+					logic.RunAlgorithm(c.String("image"), c.String("output"), c.Uint("points"),c.String("shape"),
 						c.Uint("mutations"), c.Float64("variation"), c.Uint("population"), c.Uint("cache"),
 						c.Uint("cutoff"), c.Uint("block"), c.Uint("reps"), c.Uint("threads"))
 					return nil
@@ -112,9 +118,15 @@ func main() {
 						Required: true,
 						Usage:    "the image to use",
 					},
+					&cli.StringFlag{
+						Name:     "shape",
+						Aliases:  []string{"s"},
+						Value: "triangles",
+						Usage:    "the type of shape to use, either triangles or polygons",
+					},
 				},
 				Action: func(c *cli.Context) error {
-					utils.RenderSVG(c.String("input"), c.String("output"), c.String("image"))
+					logic.RenderSVG(c.String("input"), c.String("output"), c.String("image"), c.String("shape"))
 					return nil
 				},
 				Subcommands: []*cli.Command{
@@ -136,13 +148,12 @@ func main() {
 							},
 							&cli.Float64Flag{
 								Name:    "scale",
-								Aliases: []string{"s"},
 								Value:   1,
-								Usage:   "either none, gradient, or split",
+								Usage:   "how much to scale the output by",
 							},
 						},
 						Action: func(c *cli.Context) error {
-							utils.RenderPNG(c.String("input"), c.String("output"), c.String("image"),
+							logic.RenderPNG(c.String("input"), c.String("output"), c.String("image"), c.String("shape"),
 								c.String("effect"), c.Float64("scale"))
 							return nil
 						},

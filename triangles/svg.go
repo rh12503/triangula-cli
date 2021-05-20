@@ -1,8 +1,9 @@
-package export
+package triangles
 
 import (
 	"bufio"
 	"fmt"
+	"github.com/RH12503/Triangula-CLI/util"
 	"github.com/RH12503/Triangula/image"
 	"github.com/RH12503/Triangula/normgeom"
 	"github.com/RH12503/Triangula/render"
@@ -40,10 +41,10 @@ func WriteSVG(filename string, points normgeom.NormPointGroup, img image.Data) e
 
 		writer.WriteString(
 			fmt.Sprintf(
-				svgPoly, scale(tri[0].X, w), scale(tri[0].Y, h),
-				scale(tri[1].X, w), scale(tri[1].Y, h),
-				scale(tri[2].X, w), scale(tri[2].Y, h),
-				scale(col.R, 255), scale(col.G, 255), scale(col.B, 255),
+				svgPoly, util.Scale(tri[0].X, w), util.Scale(tri[0].Y, h),
+				util.Scale(tri[1].X, w), util.Scale(tri[1].Y, h),
+				util.Scale(tri[2].X, w), util.Scale(tri[2].Y, h),
+				util.Scale(col.R, 255), util.Scale(col.G, 255), util.Scale(col.B, 255),
 			),
 		)
 	}
