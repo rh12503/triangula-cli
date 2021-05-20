@@ -10,7 +10,15 @@ Run the algorithm using the command:
 ```
 triangula run -img <path/to/your/image> -out <path/to/save/file>
 ```
-For almost all cases, only changing the number of points and leaving all other options with their default values will generate an optimal result, but for a list of available options, run:
+For almost all cases, only changing the number of points and the shape type and leaving all other options with their default values will generate an optimal result. 
+
+To change the shape type use the flag:
+```
+-shape [triangles|polygons]
+```
+
+
+For a list of available options, run:
 ```
 triangula run -help
 ```
@@ -18,6 +26,11 @@ triangula run -help
 ### Rendering
 
 There are 2 image formats which the _.json_ file can be rendered to: SVG and PNG. PNG is currently the only format that supports effects. 
+
+To change the shape type use the flag:
+```
+-shape [triangles|polygons]
+```
 
 #### SVG
 Renders the _.json_ file to a SVG. 
